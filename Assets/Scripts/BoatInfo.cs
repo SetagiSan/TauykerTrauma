@@ -7,10 +7,12 @@ public class BoatInfo : MonoBehaviour
     public float pressure;
     public float WaterPressure=1000;
     public float g = 10;
-    public float V = 10;
+    public float Volume = 10;
+    public float Temperature = 10;
 
-    private void FixedUpdate()
+    private void Start()
     {
-        pressure = WaterPressure * g * V;
+        pressure = WaterPressure * g * Volume* Temperature / 10;
+
     }
 }
