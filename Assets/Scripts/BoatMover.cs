@@ -14,13 +14,14 @@ public class BoatMover : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (transform.rotation.x != 0)
+      /* if (transform.rotation.x != 0)
         {
             print(transform.eulerAngles.x);
             if (transform.rotation.x < 0)
             transform.Rotate(transform.rotation.x*10, 0,0);
             else transform.Rotate(-transform.rotation.x*10, 0, 0);
         }
+      */
         #region Controller
         if (Input.GetKey(KeyCode.W))
         {
@@ -32,11 +33,11 @@ public class BoatMover : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(0, -1, 0);
+            m_Rigidbody.AddTorque(transform.up *-1);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(0, 1, 0);
+            m_Rigidbody.AddTorque(transform.up);
         }
         if (Input.GetKey(KeyCode.E))
         {
