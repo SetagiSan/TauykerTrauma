@@ -7,6 +7,7 @@ public class BoatMover : MonoBehaviour
 {
     [SerializeField] private float Speed;
     [SerializeField] private float Turn; // скорость разворота
+    [SerializeField] private float GyroSpeed; // сила гироскопа (чем выше значение, тем слабее)
     Rigidbody m_Rigidbody;
     private void Start()
     {
@@ -14,14 +15,24 @@ public class BoatMover : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (transform.eulerAngles.x != 0)    // оставил для тестов
+        if (transform.eulerAngles.x != 0)    // для оси X (красный вектор)
         {
-            print(transform.eulerAngles.x);
+           // print(transform.eulerAngles.x);
             if (transform.eulerAngles.x > 2 && transform.eulerAngles.x < 180)
-                m_Rigidbody.AddTorque(transform.right * (-1) * (transform.eulerAngles.x / 10));
+                m_Rigidbody.AddTorque(transform.right * (-1) * (transform.eulerAngles.x / GyroSpeed));
             else if (transform.eulerAngles.x < 358 && transform.eulerAngles.x > 180)
             {
-                m_Rigidbody.AddTorque(transform.right * (1) * ((360 - transform.eulerAngles.x) / 10));
+                m_Rigidbody.AddTorque(transform.right * (1) * ((360 - transform.eulerAngles.x) / GyroSpeed));
+            }
+        }
+        if (transform.eulerAngles.z != 0)    // для оси z (синий вектор)
+        {
+            // print(transform.eulerAngles.z);
+            if (transform.eulerAngles.z > 2 && transform.eulerAngles.z < 180)
+                m_Rigidbody.AddTorque(transform.forward * (-1) * (transform.eulerAngles.z / GyroSpeed));
+            else if (transform.eulerAngles.z < 358 && transform.eulerAngles.z > 180)
+            {
+                m_Rigidbody.AddTorque(transform.forward * (1) * ((360 - transform.eulerAngles.z) / GyroSpeed));
             }
         }
         #region Controller
