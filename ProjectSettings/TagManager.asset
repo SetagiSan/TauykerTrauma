@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Boat
+  - Distruct
   layers:
   - Default
   - TransparentFX
