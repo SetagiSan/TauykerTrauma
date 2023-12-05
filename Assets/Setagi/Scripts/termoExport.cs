@@ -12,10 +12,13 @@ public class termoExport : MonoBehaviour
     // Update is called once per frame
     private void OnTriggerStay(Collider other)
     {
-        BoatInfo ColInfo = other.GetComponent<BoatInfo>();
-        if (SelfInfo.Temperature != ColInfo.Temperature)
+        if (other.GetComponent<BoatInfo>() != null)
         {
-            ColInfo.Temperature += (SelfInfo.Temperature - ColInfo.Temperature)/4;
+            BoatInfo ColInfo = other.GetComponent<BoatInfo>();
+            if (SelfInfo.Temperature != ColInfo.Temperature)
+            {
+                ColInfo.Temperature += (SelfInfo.Temperature - ColInfo.Temperature) / 100;
+            }
         }
     }
 }

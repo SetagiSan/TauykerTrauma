@@ -19,7 +19,6 @@ public class BoatInfo : MonoBehaviour
 
     private void FixedUpdate()
     {
-        print(Temperature);
         speed = (transform.position - OLD_Position) / Time.deltaTime;
         OLD_Position = transform.position;
         pressure = Mathf.Abs(transform.position.y) * Temperature* speed.magnitude;//0 считается границей воды
