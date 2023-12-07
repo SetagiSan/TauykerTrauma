@@ -7,7 +7,7 @@ public class Radiation : MonoBehaviour
 {
     [SerializeField] private float epicenterDamage = 50f;
     private float radRadius;
-   
+
     private bool onTrigger = false;
     private Strength obj;
     float distance;
@@ -19,24 +19,24 @@ public class Radiation : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(onTrigger && otherCollider != null)
+        if (onTrigger && otherCollider != null)
         {
             obj = otherCollider.GetComponent<Strength>();
             distance = Vector3.Distance(otherCollider.transform.position, gameObject.transform.position);
             RadDamage();
         }
-       
+
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (other.transform.CompareTag("Distruct"))
-            {
+        {
             otherCollider = other;
             onTrigger = true;
-            Debug.Log(other);
+
         }
-       
+
 
     }
     private void OnTriggerExit(Collider other)
@@ -46,12 +46,12 @@ public class Radiation : MonoBehaviour
 
     private void RadDamage()
     {
-        Debug.Log("Radiation");
+
         float reduction = radRadius / distance / 100f;
         if (obj != null)
         {
             obj.RadiationDamage(epicenterDamage * reduction);
         }
     }
-    
+
 }
