@@ -6,34 +6,47 @@ using Dist;
 
 namespace Dist
 {
+   
     public class Strength : MonoBehaviour
     {
-        [SerializeField] private int objectHealth;
-        [SerializeField] private int damageReduction;
+        #region Var
+        [SerializeField] private float objectHealth;
+        [SerializeField][Range(1f, 100f)] private float damageReduction;
         [SerializeField] private GameObject distructObject;
+        
+        [SerializeField] private List<string> materials = new List<string>();
+
         Distruction dist;
 
         private GameObject fractObj;
+        #endregion
+
 
 
         private void Start()
         {
             dist = gameObject.AddComponent<Distruction>();
+            if(materials.Count > 0 )
+            {
+                damageReduction = ResistanceCalculator.ExplosionReduction(materials);
+            }
+            Debug.Log($"{gameObject.name} Damage Reduction: {damageReduction}");
+            
         }
-        public void GetDamage(int damage)
+        
+        //Функция получения урона
+        public void GetDamage(float damage)
         {
             Debug.Log("Damage");
-            objectHealth = objectHealth - (damage * damageReduction / 100);
+            objectHealth = objectHealth - (damage - (damage * (damageReduction / 100)));
             if (objectHealth <= 0) dist.Disctruct(gameObject, distructObject);
-
-
         }
 
-        public void WaveDamage(int damage, Vector3 transformObj, float explosionMinForce, float explosionMaxForce, float explosionForceRadius)
+        //Функция получения урона от ударной волны
+        public void WaveDamage(float damage, Vector3 transformObj, float explosionMinForce, float explosionMaxForce, float explosionForceRadius)
         {
-            Debug.Log("WaveDamage");
-            objectHealth = objectHealth - (damage * damageReduction / 100);
-            Debug.Log(objectHealth);
+            Debug.Log($"WaveDamage = {damage}");
+            objectHealth = objectHealth - (damage - (damage * (damageReduction / 100)));
             if (objectHealth <= 0)
             {
                 fractObj = Instantiate(distructObject, gameObject.transform.position, Quaternion.identity) as GameObject;
@@ -47,15 +60,20 @@ namespace Dist
                         rb.AddExplosionForce(100, transformObj, 100);
                     }
                 }
-                /* for (int i = 0; i < distructObject.transform.childCount; i++)
-                {
-                    rb = distructObject.transform.GetChild(i).GetComponent<Rigidbody>();
-                    if (rb != null)
-                    {
-                        Debug.Log(rb);
-                        rb.AddExplosionForce(1000, new Vector3(42, 2, 12), 1000);
-                    }
-                } */
+
+            }
+        }
+
+        //Функция нанесения урона радиацией
+        public void RadiationDamage(float damage)
+        {
+            Debug.Log($"Radiation damage = {damage}");
+            Debug.Log($"Health : {objectHealth}");
+            objectHealth = objectHealth - (damage - (damage * (damageReduction / 100)));
+            if (objectHealth <= 0)
+            {
+                fractObj = Instantiate(distructObject, gameObject.transform.position, Quaternion.identity) as GameObject;
+                Destroy(gameObject);
 
             }
         }

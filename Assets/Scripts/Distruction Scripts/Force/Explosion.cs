@@ -9,13 +9,8 @@ public class Explosion : MonoBehaviour
     public float explosionMaxForce = 100;
     public float explosionForceRadius = 10;
     public float fragScaleFactor = 1;
-    public int damage = 0;
-    Strength str;
-    // Start is called before the first frame update
-    void Start()
-    {
-        str = gameObject.AddComponent<Strength>();
-    }
+    public float damage = 0;
+
 
     // Update is called once per frame
 
@@ -26,7 +21,11 @@ public class Explosion : MonoBehaviour
         {
             Debug.Log("Explode");
             Strength obj = other.GetComponent<Strength>();
-            obj.WaveDamage(damage, gameObject.transform.position, explosionMinForce, explosionMaxForce, explosionForceRadius);
+            if (obj != null)
+            {
+                obj.WaveDamage(damage, gameObject.transform.position, explosionMinForce, explosionMaxForce, explosionForceRadius);
+            }
+            
         }
     }
 
