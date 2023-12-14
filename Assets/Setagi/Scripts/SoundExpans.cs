@@ -26,11 +26,11 @@ public class SoundExpans : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Boat") {
-            Ray ray = new Ray(transform.position, other.transform.position-transform.position);
+            Ray ray = new Ray(transform.position, other.transform.position - transform.position);
+            Debug.DrawRay(transform.position, other.transform.position - transform.position, Color.green);
             Physics.Raycast(ray, out hit);
             if (hit.collider.tag == "Boat") {
-                print(hit.collider.gameObject);
-               // Debug.DrawRay(transform.position, other.transform.position - transform.position, Color.green);
+                print(hit.collider.bounds.extents);
             }
         }
     }
