@@ -22,6 +22,7 @@ public class Radiation : MonoBehaviour
         if (onTrigger && otherCollider != null)
         {
             obj = otherCollider.GetComponent<Strength>();
+
             distance = Vector3.Distance(otherCollider.transform.position, gameObject.transform.position);
             RadDamage();
         }
@@ -30,6 +31,7 @@ public class Radiation : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        Debug.Log(other);
         if (other.transform.CompareTag("Distruct"))
         {
             otherCollider = other;
