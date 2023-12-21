@@ -10,10 +10,9 @@ public class CollisionForce : MonoBehaviour
     {
         if (other.transform.CompareTag("Distruct"))
         {
-            Debug.Log(other.relativeVelocity.magnitude);
+            //Debug.Log(other.relativeVelocity.magnitude);
             if (other.relativeVelocity.magnitude > maxCollisionVelocity)
             {
-
                 Strength obj = other.transform.GetComponent<Strength>();
                 if (obj != null)
                 {

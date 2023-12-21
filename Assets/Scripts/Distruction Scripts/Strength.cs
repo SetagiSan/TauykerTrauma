@@ -11,15 +11,15 @@ namespace Dist
     public class Strength : MonoBehaviour
     {
         #region Var
-        [SerializeField] private float objectHealth;
+        [SerializeField] public float objectHealth;
+        [SerializeField] private float maxDamageTake = 0;
         [SerializeField][Range(1f, 100f)] private float damageReduction;
         [SerializeField] private GameObject distructObject;
 
         [SerializeField] private List<string> materials = new List<string>();
 
-        private bool partInCollision = true;
-
         Distruction dist;
+        Strength obj;
         private GameObject fractObj;
         #endregion
 
@@ -32,8 +32,6 @@ namespace Dist
             {
                 damageReduction = ResistanceCalculator.ExplosionReduction(materials);
             }
-
-
         }
 
         //Damage function
@@ -41,7 +39,9 @@ namespace Dist
         {
             Debug.Log("Damage");
             objectHealth = objectHealth - (damage - (damage * (damageReduction / 100)));
+            TransferDamage(damage);
             if (objectHealth <= 0) dist.Disctruct(gameObject, distructObject);
+
         }
 
         //Function take shock wave damage
@@ -49,6 +49,7 @@ namespace Dist
         {
             /* Debug.Log($"WaveDamage = {damage}"); */
             objectHealth = objectHealth - (damage - (damage * (damageReduction / 100)));
+            TransferDamage(damage);
             if (objectHealth <= 0)
             {
                 fractObj = Instantiate(distructObject, gameObject.transform.position, Quaternion.identity) as GameObject;
@@ -61,7 +62,6 @@ namespace Dist
                         rb.AddExplosionForce(100, transformObj, 100);
                     }
                 }
-
             }
         }
 
@@ -74,42 +74,49 @@ namespace Dist
             if (objectHealth <= 0)
             {
                 fractObj = Instantiate(distructObject, gameObject.transform.position, Quaternion.identity) as GameObject;
-                TransferDamage();
+
                 Destroy(gameObject);
             }
         }
 
-
-        //Function that transfer damage on othe parts 
-        private void TransferDamage()
+        //Function that transfer damage on other parts 
+        private void TransferDamage(float damage)
         {
-            Debug.Log(partInCollision);
-            if (partInCollision)
+            //Debug.Log("Transfer Damage");
+            if (obj != null && damage > maxDamageTake)
             {
-                Debug.Log("Colide ok");
+                //Debug.Log("Colide ok");
+                obj.DamageToOtherPart(damage - maxDamageTake);
             }
         }
 
+        private void DamageToOtherPart(float damage)
+        {
+            objectHealth = objectHealth - (damage - (damage * (damageReduction / 100)));
+            TransferDamage(damage);
+            if (objectHealth <= 0) dist.Disctruct(gameObject, distructObject);
+        }
 
         #region TriggersCheck
         private void OnTriggerStay(Collider other)
         {
-            if (other.GetType() == typeof(BoxCollider) && other.CompareTag("Distruct") && partInCollision == false)
+            if (other.GetType() == typeof(BoxCollider) && other.CompareTag("Distruct") && other != this.gameObject)
             {
-                partInCollision = true;
+                //partInCollision = true;
                 //Debug.Log($"Collision {partInCollision}");
+                obj = other.transform.GetComponent<Strength>();
             }
         }
-        private void OnTriggerExit(Collider other)
-        {
+        /*  private void OnTriggerExit(Collider other)
+         {
 
-            if (other.GetType() == typeof(BoxCollider) && other.CompareTag("Distruct"))
-            {
-                Debug.Log($"Not Collision{partInCollision}");
-                partInCollision = false;
+             if (other.GetType() == typeof(BoxCollider) && other.CompareTag("Distruct"))
+             {
+                 partInCollision = false;
+                 print("Collision Exit");
 
-            }
-        }
+             }
+         } */
         #endregion
 
 
