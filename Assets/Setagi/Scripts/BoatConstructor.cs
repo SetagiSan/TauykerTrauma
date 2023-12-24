@@ -1,10 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class cmunalkaScript : MonoBehaviour
+public class BoatConstructor : MonoBehaviour
 {
     [SerializeField]
     private GameObject cube;
@@ -14,57 +12,59 @@ public class cmunalkaScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        blocks = new int[MassValume,MassValume,MassValume];
+        blocks = new int[MassValume, MassValume, MassValume];
         blocksRef = new GameObject[MassValume, MassValume, MassValume];
         FixedJoint Connector = null;
-        blocks[0,0,0] = 1;
-        blocks[0,0,1] = 1;
-        blocks[0,1,0] = 1;
-        blocks[1,0,0] = 1;
-        blocks[1, 0, 1] = 1;
-        blocks[1, 1, 1] = 1;
-        blocks[1, 1, 0] = 1;
-        blocks[1, 1, 1] = 1;
-        for (int INDEX0 = 0; INDEX0 < MassValume; INDEX0++) 
-        { 
-            for (int INDEX1 = 0;INDEX1 < MassValume; INDEX1++)
+        blocks[0, 0, 0] = 1;
+        blocks[9,9,9] = 1;
+        blocks[9, 0, 0] = 1;
+        blocks[0, 9, 0] = 1;
+        blocks[0, 0, 9] = 1;
+        blocks[9, 9, 0] = 1;
+        blocks[0, 9, 9] = 1;
+        blocks[9, 0, 9] = 1;
+        blocks[5, 5, 5] = 1;
+        for (int INDEX0 = 0; INDEX0 < MassValume; INDEX0++)
+        {
+            for (int INDEX1 = 0; INDEX1 < MassValume; INDEX1++)
             {
-                for (int INDEX2 = 0;INDEX2 < MassValume; INDEX2++)
+                for (int INDEX2 = 0; INDEX2 < MassValume; INDEX2++)
                 {
-                    if (blocks[INDEX0,INDEX1,INDEX2] == 1)
+                    if (blocks[INDEX0, INDEX1, INDEX2] == 1)
                     {
-                        blocksRef[INDEX0,INDEX1,INDEX2] = Instantiate(cube, transform.position + new Vector3(INDEX0, INDEX1, INDEX2), Quaternion.identity);// blocks spawn
+                        blocksRef[INDEX0, INDEX1, INDEX2] = Instantiate(cube, transform.position + new Vector3(INDEX0, INDEX1, INDEX2), Quaternion.identity);// blocks spawn
                         #region add components
                         blocksRef[INDEX0, INDEX1, INDEX2].AddComponent<Rigidbody>();
                         blocksRef[INDEX0, INDEX1, INDEX2].GetComponent<Rigidbody>().useGravity = false;
                         blocksRef[INDEX0, INDEX1, INDEX2].transform.parent = transform;
                         #endregion
                         #region connectors
-                        if (INDEX0 - 1 >= 0 && blocksRef[INDEX0-1,INDEX1,INDEX2] ) {
+                        if (INDEX0 - 1 >= 0 && blocksRef[INDEX0 - 1, INDEX1, INDEX2])
+                        {
                             Connector = blocksRef[INDEX0, INDEX1, INDEX2].AddComponent<FixedJoint>();
                             Connector.connectedBody = blocksRef[INDEX0 - 1, INDEX1, INDEX2].GetComponent<Rigidbody>();
                         }
-                        if (INDEX1 - 1 >= 0 && blocksRef[INDEX0, INDEX1-1, INDEX2])
+                        if (INDEX1 - 1 >= 0 && blocksRef[INDEX0, INDEX1 - 1, INDEX2])
                         {
                             Connector = blocksRef[INDEX0, INDEX1, INDEX2].AddComponent<FixedJoint>();
-                            Connector.connectedBody = blocksRef[INDEX0, INDEX1-1, INDEX2].GetComponent<Rigidbody>();
+                            Connector.connectedBody = blocksRef[INDEX0, INDEX1 - 1, INDEX2].GetComponent<Rigidbody>();
                         }
-                        if (INDEX2 - 1 >= 0 && blocksRef[INDEX0, INDEX1, INDEX2-1])
+                        if (INDEX2 - 1 >= 0 && blocksRef[INDEX0, INDEX1, INDEX2 - 1])
                         {
                             Connector = blocksRef[INDEX0, INDEX1, INDEX2].AddComponent<FixedJoint>();
-                            Connector.connectedBody = blocksRef[INDEX0, INDEX1, INDEX2-1].GetComponent<Rigidbody>();
+                            Connector.connectedBody = blocksRef[INDEX0, INDEX1, INDEX2 - 1].GetComponent<Rigidbody>();
                         }
                         #endregion
                     }
                 }
             }
         }
-            Connector.connectedBody = blocksRef[0, 1, 0].GetComponent<Rigidbody>();
+        Connector.connectedBody = blocksRef[0, 1, 0].GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

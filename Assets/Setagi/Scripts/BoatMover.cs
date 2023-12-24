@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BoatMover : MonoBehaviour
 {
-    [SerializeField] private float Speed;
+    public float Speed;
     [SerializeField] private float Turn; // скорость разворота
     [SerializeField] private float GyroSpeed; // сила гироскопа (чем выше значение, тем слабее)
     Rigidbody m_Rigidbody;
