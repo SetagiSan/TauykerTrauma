@@ -40,6 +40,7 @@ public class Sub : MonoBehaviour
         #region Controller 
         if (Input.GetKey(KeyCode.W))
         {
+            print("W");
             m_Rigidbody.AddForce(transform.forward * Speed);
         }
         if (Input.GetKey(KeyCode.S))
