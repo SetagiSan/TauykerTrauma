@@ -11,7 +11,7 @@ namespace Dist
     public class Strength : MonoBehaviour
     {
         #region Var
-        [SerializeField] private float objectHealth;
+        [SerializeField] public float objectHealth;
         [SerializeField] private float maxDamageTake = 0;
         [SerializeField][Range(1f, 100f)] private float damageReduction;
         [SerializeField] private GameObject distructObject;
